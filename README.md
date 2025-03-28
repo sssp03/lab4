@@ -62,4 +62,52 @@ plt.show()
 - Se grafica la señal adquirida (data).
 - Se etiquetan los ejes (Amplitud en el eje Y).
 - Se muestra la gráfica.
-  
+
+Después de capturar la señal se le plicaron los siguientes filtros para limpiar la señal y quedara mas bonita:
+# Filtrado pasa altas (High-pass, 20 Hz):
+Esta parte del código elimina el ruido de baja frecuencia (artefactos de movimiento, línea base).
+```python
+high_cutoff = 20  # Frecuencia de corte en Hz
+b_high, a_high = signal.butter(4, high_cutoff / (fs / 2), btype='high')
+emg_highpass = signal.filtfilt(b_high, a_high, emg_signal)
+```
+- Diseña un filtro Butterworth de orden 4.
+- Aplica el filtro a la señal usando filtfilt() (filtrado en ambas direcciones para evitar desfase).
+# Filtrado pasa bajas (Low-pass, 450 Hz):
+Esta parte elimina interferencias electromagnéticas y ruido de alta frecuencia.
+```python
+low_cutoff = 450  # Frecuencia de corte en Hz
+b_low, a_low = signal.butter(4, low_cutoff / (fs / 2), btype='low')
+emg_filtered = signal.filtfilt(b_low, a_low, emg_highpass)
+```
+- Diseña otro filtro Butterworth de orden 4.
+- Filtra la señal después del pasa altas
+![SEÑALORIGINAL Y FILTRADA](https://github.com/user-attachments/assets/0ea90c99-d4b8-42cb-b625-3a16d711fbd6)
+
+Luego de realizar estos filtros, se dividio la señal registrada en ventanas de tiempo, usando una técnica de aventanamiento como la ventana de Hamming o Hanning. y realizar el análisis espectral de cada ventana utilizando la Transformada de Fourier (FFT) para obtener el espectro de frecuencias en intervalos específicos de la señal EMG.
+# Ventaneo de la señal EMG
+Esta parte divide la señal en ventanas de 0.5 segundos con 50% de solapamiento.
+```python
+win_size = int(0.5 * fs)  # Ventana de 0.5s (1000 muestras)
+overlap = int(0.25 * fs)  # 50% de solapamiento (500 muestras)
+step = win_size - overlap
+num_windows = (len(emg_filtered) - win_size) // step
+```
+- Convierte 0.5 s en muestras → 0.5×2000=1000
+- Calcula el solapamiento (mitad de la ventana).
+- Determina cuántas ventanas caben en la señal.
+# Aplicación de la Ventana de Hamming
+Cada segmento de la señal se multiplica por una ventana de Hamming para suavizar los bordes.
+```python
+segment = emg_filtered[start:end] * np.hamming(win_size)
+```
+- Extrae un segmento de 1000 muestras.
+- Multiplica por la ventana de Hamming (reduce efectos de bordes en la FFT).
+# Transformada de Fourier (FFT) en cada ventana
+Esto obtiene el espectro de frecuencias de cada segmento.
+```python
+fft_spectrum = np.fft.rfft(segment)  # FFT rápida para señales reales
+freqs = np.fft.rfftfreq(win_size, d=1/fs)  # Calcula las frecuencias correspondientes
+```
+- np.fft.rfft() → Calcula la Transformada de Fourier de la señal en la ventana.
+- np.fft.rfftfreq() → Genera el eje de frecuencias (hasta 500 Hz).
