@@ -133,7 +133,7 @@ freq_std = np.sqrt(np.sum((freqs - freq_media)**2 * fft_spectrum) / np.sum(fft_s
 
 El análisis espectral de la señal segmentada en diferentes ventanas temporales muestra que la mayor concentración de energía se encuentra en el rango de 0 a 100 Hz, lo cual es característico de la actividad muscular. A partir de los 100 Hz, la amplitud de la señal disminuye progresivamente, lo que indica una menor presencia de componentes de alta frecuencia, también Se puede  observar cierta variabilidad entre las ventanas, lo que podría significar cambios en la activación muscular a lo largo del tiempo. Además, en frecuencias superiores a 200 Hz, se presenta un nivel de ruido que podría estar asociado a interferencias externas o artefactos de movimiento. 
 
-# Prueba de hipótesis 
+## Prueba de hipótesis 
 Una prueba de hipótesis es un procedimiento estadístico utilizado para determinar si existe suficiente evidencia en una muestra de datos para aceptar o rechazar una suposición sobre una población. 
 
 ![image](https://github.com/user-attachments/assets/92aa7e43-7f2b-4112-bdfd-87c966b6f9f5)
@@ -185,7 +185,7 @@ Las regiones sombreadas en rojo corresponden a las regiones de rechazo para un n
 El estadístico t calculado en esta prueba es t = -0.01 (línea verde punteada), el cual se encuentra dentro de la región de aceptación. Esto indica que no hay suficiente evidencia estadística para rechazar la hipótesis nula, es decir, no se detecta una diferencia significativa entre las medianas de las muestras comparadas.
 Este resultado sugiere que los cambios observados en los datos pueden deberse a la variabilidad natural de la muestra y no a un efecto real significativo.
 
-# Hipótesis para el análisis de fatiga muscular
+## Hipótesis para el análisis de fatiga muscular
 - Hipótesis nula (H₀): No hay fatiga muscular, la mediana de la señal EMG no muestra un cambio significativo.
 - Hipótesis alternativa (H₁): Hay fatiga muscular, la mediana de la señal EMG presenta un cambio significativo.
 Según el gráfico de la distribución t , si el estadístico t cae dentro de la región blanca (zona de aceptación), no se rechaza la hipótesis nula (H₀), lo que sugiere que no hay evidencia suficiente para afirmar que existe fatiga muscular.
