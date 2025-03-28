@@ -131,6 +131,9 @@ freq_std = np.sqrt(np.sum((freqs - freq_media)**2 * fft_spectrum) / np.sum(fft_s
 - Mide la dispersión de la energía espectral respecto a la frecuencia media.
 ![ESPECTRO](https://github.com/user-attachments/assets/999854c3-d73a-4284-9647-97348099e20a)
 
+El análisis espectral de la señal segmentada en diferentes ventanas temporales muestra que la mayor concentración de energía se encuentra en el rango de 0 a 100 Hz, lo cual es característico de la actividad muscular. A partir de los 100 Hz, la amplitud de la señal disminuye progresivamente, lo que indica una menor presencia de componentes de alta frecuencia, también Se puede  observar cierta variabilidad entre las ventanas, lo que podría significar cambios en la activación muscular a lo largo del tiempo. Además, en frecuencias superiores a 200 Hz, se presenta un nivel de ruido que podría estar asociado a interferencias externas o artefactos de movimiento. 
+
+# Prueba de hipótesis 
 
 
 
