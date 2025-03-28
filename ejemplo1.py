@@ -35,10 +35,22 @@ for i in range(num_windows):
     segment = emg_filtered[start:end] * np.hamming(win_size)  # Aplicar ventana de Hamming
     
     # --- ANÁLISIS ESPECTRAL ---
-    fft_spectrum = np.fft.rfft(segment)
-    freqs = np.fft.rfftfreq(win_size, d=1/fs)
+    fft_spectrum = np.abs(np.fft.rfft(segment))  # Magnitud de la FFT
+    freqs = np.fft.rfftfreq(win_size, d=1/fs)  # Eje de frecuencias
     
-    plt.plot(freqs, np.abs(fft_spectrum), alpha=0.5, label=f"Ventana {i+1}" if i < 5 else None)
+    # --- CÁLCULO DE PARÁMETROS ESPECTRALES ---
+    freq_dominante = freqs[np.argmax(fft_spectrum)]  # Frecuencia con mayor amplitud
+    freq_media = np.sum(freqs * fft_spectrum) / np.sum(fft_spectrum)  # Media ponderada
+    freq_std = np.sqrt(np.sum((freqs - freq_media)**2 * fft_spectrum) / np.sum(fft_spectrum))  # Desviación estándar
+    
+    # Mostrar resultados en consola
+    print(f"Ventana {i+1}:")
+    print(f"  Frecuencia Dominante: {freq_dominante:.2f} Hz")
+    print(f"  Frecuencia Media: {freq_media:.2f} Hz")
+    print(f"  Desviación Estándar: {freq_std:.2f} Hz\n")
+
+    # Graficar espectro de cada ventana
+    plt.plot(freqs, fft_spectrum, alpha=0.5, label=f"Ventana {i+1}" if i < 5 else None)
 
 # Configuración de la gráfica de espectro
 plt.title("Análisis Espectral de la Señal EMG por Ventanas")
@@ -48,7 +60,4 @@ plt.xlim([0, 500])
 plt.grid()
 plt.legend()
 plt.show()
-
-# Guardar la señal filtrada
-np.savetxt("emg_healthy_filtered.txt", np.column_stack((t, emg_filtered)), header="Tiempo[s] SeñalEMG_Filtrada", comments='')
 
