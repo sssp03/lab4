@@ -111,3 +111,29 @@ freqs = np.fft.rfftfreq(win_size, d=1/fs)  # Calcula las frecuencias correspondi
 ```
 - np.fft.rfft() → Calcula la Transformada de Fourier de la señal en la ventana.
 - np.fft.rfftfreq() → Genera el eje de frecuencias (hasta 500 Hz).
+Frecuencia dominante:
+
+# Frecuencia dominante:
+```python
+freq_dominante = freqs[np.argmax(fft_spectrum)]
+```
+-Toma la frecuencia donde la FFT tiene el pico máximo (mayor amplitud).
+
+# Frecuencia media (Centroide espectral):
+```python
+freq_media = np.sum(freqs * fft_spectrum) / np.sum(fft_spectrum)
+```
+-Calcula la media ponderada de las frecuencias del espectro.
+# Desviación estándar espectral:
+```python
+freq_std = np.sqrt(np.sum((freqs - freq_media)**2 * fft_spectrum) / np.sum(fft_spectrum))
+```
+- Mide la dispersión de la energía espectral respecto a la frecuencia media.
+![ESPECTRO](https://github.com/user-attachments/assets/999854c3-d73a-4284-9647-97348099e20a)
+
+
+
+
+
+
+
