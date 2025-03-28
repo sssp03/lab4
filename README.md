@@ -134,8 +134,63 @@ freq_std = np.sqrt(np.sum((freqs - freq_media)**2 * fft_spectrum) / np.sum(fft_s
 El análisis espectral de la señal segmentada en diferentes ventanas temporales muestra que la mayor concentración de energía se encuentra en el rango de 0 a 100 Hz, lo cual es característico de la actividad muscular. A partir de los 100 Hz, la amplitud de la señal disminuye progresivamente, lo que indica una menor presencia de componentes de alta frecuencia, también Se puede  observar cierta variabilidad entre las ventanas, lo que podría significar cambios en la activación muscular a lo largo del tiempo. Además, en frecuencias superiores a 200 Hz, se presenta un nivel de ruido que podría estar asociado a interferencias externas o artefactos de movimiento. 
 
 # Prueba de hipótesis 
+Una prueba de hipótesis es un procedimiento estadístico utilizado para determinar si existe suficiente evidencia en una muestra de datos para aceptar o rechazar una suposición sobre una población. 
 
+![image](https://github.com/user-attachments/assets/92aa7e43-7f2b-4112-bdfd-87c966b6f9f5)
 
+# Se importaron las librerías:
+
+```python
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+```
+# Se definieron los datos de muestras :
+```python
+n1 = 50858  # Número de muestras del primer grupo
+n2 = 50858  # Número de muestras del segundo grupo
+mu1 = 0.001200367   # Media del primer grupo
+mu2 = 0.001452753   # Media del segundo grupo
+sigma1 = 5.1903     # Desviación estándar del primer grupo
+sigma2 = 5.1904     # Desviación estándar del segundo grupo
+```
+# El cálculo estadístico:
+```python
+t_stat = (mu1 - mu2) / np.sqrt((sigma1**2 / n1) + (sigma2**2 / n2))
+```
+# Cálculo de los grados de libertad 
+```python
+df = ((sigma1**2 / n1) + (sigma2**2 / n2))**2 / (
+    ((sigma1**2 / n1)**2 / (n1 - 1)) + ((sigma2**2 / n2)**2 / (n2 - 1))
+)
+df = int(df)  # Se convierte a entero
+```
+# Valor crítico:
+```python
+alpha_01 = stats.t.ppf(1 - 0.025, df=df)
+```
+# Generación de la distribución
+```python
+x = np.linspace(-4, 4, 400)  # Se crea un rango de valores de t
+y = stats.t.pdf(x, df=df)    # Se calcula la función de densidad de probabilidad
+```
+# Gráfica de distribución
+```python
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label=f'Distribución t (df={df})', color='blue')
+```
+
+El gráfico representa la distribución t , utilizada para evaluar la significancia estadística en una prueba de hipótesis. La curva azul muestra la distribución t con 101,713 grados de libertad, lo que implica que se asemeja a una distribución normal estándar debido al gran tamaño de la muestra.
+Las regiones sombreadas en rojo corresponden a las regiones de rechazo para un nivel de significancia de α = 0.05. Los valores críticos de t se encuentran en ±1.96, lo que significa que cualquier estadístico de prueba fuera de este rango indicaría una diferencia estadísticamente significativa entre las muestras.
+El estadístico t calculado en esta prueba es t = -0.01 (línea verde punteada), el cual se encuentra dentro de la región de aceptación. Esto indica que no hay suficiente evidencia estadística para rechazar la hipótesis nula, es decir, no se detecta una diferencia significativa entre las medianas de las muestras comparadas.
+Este resultado sugiere que los cambios observados en los datos pueden deberse a la variabilidad natural de la muestra y no a un efecto real significativo.
+
+# Hipótesis para el análisis de fatiga muscular
+- Hipótesis nula (H₀): No hay fatiga muscular, la mediana de la señal EMG no muestra un cambio significativo.
+- Hipótesis alternativa (H₁): Hay fatiga muscular, la mediana de la señal EMG presenta un cambio significativo.
+Según el gráfico de la distribución t , si el estadístico t cae dentro de la región blanca (zona de aceptación), no se rechaza la hipótesis nula (H₀), lo que sugiere que no hay evidencia suficiente para afirmar que existe fatiga muscular.
+Por otro lado, si el estadístico t cae en la región sombreada (zona de rechazo), se rechaza la hipótesis nula (H₀) y se acepta la alternativa (H₁), lo que indica que sí hay un cambio significativo en la señal EMG, lo cual es evidencia de fatiga muscular.
+Dado que en el gráfico el estadístico t obtenido es t = -0.01, y este valor cae dentro de la región blanca, no hay suficiente evidencia estadística para afirmar la presencia de fatiga muscular en este caso. 
 
 
 
