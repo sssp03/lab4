@@ -1,4 +1,4 @@
-# Laboratorio 4
+## Laboratorio 4
 En la práctica realizada, el objetivo fue capturar la señal electromiográfica del músculo en estado de fatiga. Para ello, se utilizaron los siguientes elementos: un módulo de ECG, jumpers,fuente de voltaje, cables con sus respectivos electrodos y un sistema de adquisición de datos NI-DAQmx este sistema se descargo por meio de un link que esta en el aula virtual.
 Como primer paso, se colocaron tres electrodos: uno de referencia (tierra) en el codo y dos de registro en el antebrazo, parecido como se muestra en la imagen:
 
